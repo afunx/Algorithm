@@ -8,7 +8,7 @@ public class BubbleSort {
 	private static int[] bubbleSort(int[] array) {
 		final int size = array.length;
 		for (int i = 1; i < size; i++) {
-			for (int j = 1; j < size; j++) {
+			for (int j = 1; j < size + 1 - i; j++) {
 				if (array[j - 1] > array[j]) {
 					// swap
 					array[j - 1] = array[j - 1] ^ array[j];

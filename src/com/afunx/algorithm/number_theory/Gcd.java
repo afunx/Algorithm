@@ -8,6 +8,7 @@ package com.afunx.algorithm.number_theory;
  */
 public class Gcd {
 
+	@SuppressWarnings("unused")
 	private static int gcd2(int a, int b) {
 		int t;
 		while (b != 0) {
