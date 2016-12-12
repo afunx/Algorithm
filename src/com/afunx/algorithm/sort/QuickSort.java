@@ -8,25 +8,29 @@ public class QuickSort {
 	private static void qsort(int[] array, int p, int r) {
 		if (p < r) {
 			int q = partition(array, p, r);
-			qsort(array, p, q);
+			qsort(array, p, q - 1);
 			qsort(array, q + 1, r);
 		}
 	}
 
+	private static void swap(int[] array, int i, int j) {
+		if (i != j) {
+			array[i] = array[i] ^ array[j];
+			array[j] = array[i] ^ array[j];
+			array[i] = array[i] ^ array[j];
+		}
+	}
+
 	private static int partition(int[] array, int p, int r) {
-		int key = array[p];
+		int key = array[r];
 		int k = p - 1;
-		for (int i = p + 1; i <= r; i++) {
-			if (key > array[i]) {
-				++k;
-				// swap array[i] and array[k]
-				array[i] = array[i] ^ array[k];
-				array[k] = array[i] ^ array[k];
-				array[i] = array[i] ^ array[k];
+		for (int i = p; i < r; i++) {
+			if (array[i] < key) {
+				swap(array, ++k, i);
 			}
 		}
-		array[k + 1] = key;
-		return k + 1;
+		swap(array, ++k, r);
+		return k;
 	}
 
 	public static void main(String args[]) {
