@@ -12,7 +12,15 @@ public class LinkedList<T> {
 		public T key = null;
 	}
 
-	private static class HeadLinkedList<T> {
+	private abstract static class LinkedListAbs<T> {
+
+		public abstract void insert(Node<T> x);
+
+		public abstract void delete(Node<T> x);
+
+	}
+
+	private static class HeadLinkedList<T> extends LinkedListAbs<T> {
 
 		private HeadNode<T> headNode;
 
@@ -26,6 +34,7 @@ public class LinkedList<T> {
 			return node;
 		}
 
+		@Override
 		public void insert(Node<T> x) {
 			x.next = headNode.first;
 			if (headNode.first != null) {
@@ -35,6 +44,7 @@ public class LinkedList<T> {
 			x.prev = null;
 		}
 
+		@Override
 		public void delete(Node<T> x) {
 			if (x.prev == null) {
 				headNode.first = x.next;
@@ -76,6 +86,55 @@ public class LinkedList<T> {
 		}
 	}
 
+	private static class NonHeadLinkedList<T> extends LinkedListAbs<T> {
+
+		private Node<T> nilNode;
+
+		private NonHeadLinkedList() {
+			nilNode = new Node<>();
+			nilNode.next = nilNode;
+			nilNode.prev = nilNode;
+		}
+
+		@Override
+		public void insert(Node<T> x) {
+			x.next = nilNode.next;
+			nilNode.next.prev = x;
+			x.prev = nilNode;
+			nilNode.next = x;
+		}
+
+		@Override
+		public void delete(Node<T> x) {
+			x.prev.next = x.next;
+			x.next.prev = x.prev;
+		}
+
+		@Override
+		public String toString() {
+			if (nilNode.next == nilNode) {
+				return "nilNode=null";
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append("next:");
+				Node<T> next = nilNode.next;
+				while (next != nilNode) {
+					sb.append(next.key + ",");
+					next = next.next;
+				}
+				sb.append("\n");
+				sb.append("prev:");
+				Node<T> prev = nilNode.prev;
+				while (prev != nilNode) {
+					sb.append(prev.key + ",");
+					prev = prev.prev;
+				}
+				return sb.toString();
+			}
+		}
+
+	}
+
 	public static void main(String args[]) {
 		HeadLinkedList<String> linkedList = new HeadLinkedList<>();
 		Node<String> head5 = HeadLinkedList.createNode("5");
@@ -95,6 +154,26 @@ public class LinkedList<T> {
 		System.out.println();
 		linkedList.delete(head1);
 		System.out.println(linkedList);
+		System.out.println();
+
+		NonHeadLinkedList<String> nonHeadLinkedList = new NonHeadLinkedList<>();
+		head5 = HeadLinkedList.createNode("5");
+		head4 = HeadLinkedList.createNode("4");
+		head3 = HeadLinkedList.createNode("3");
+		head2 = HeadLinkedList.createNode("2");
+		head1 = HeadLinkedList.createNode("1");
+		nonHeadLinkedList.insert(head5);
+		nonHeadLinkedList.insert(head4);
+		nonHeadLinkedList.insert(head3);
+		nonHeadLinkedList.insert(head2);
+		nonHeadLinkedList.insert(head1);
+		System.out.println(nonHeadLinkedList);
+		System.out.println();
+		nonHeadLinkedList.delete(head2);
+		System.out.println(nonHeadLinkedList);
+		System.out.println();
+		nonHeadLinkedList.delete(head1);
+		System.out.println(nonHeadLinkedList);
 		System.out.println();
 	}
 }
