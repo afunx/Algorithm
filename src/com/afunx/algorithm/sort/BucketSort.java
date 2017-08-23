@@ -52,7 +52,7 @@ public class BucketSort {
 
 	private static void sort(int[] array, int length) {
 		// maybe quick sort is better, but the main purpose is for BucketSort.
-		// bubble sort is eary to write and read
+		// bubble sort is easy to write and read
 		for (int i = length - 1; i > 0; i--) {
 			for (int j = 1; j <= i; j++) {
 				if (array[j] < array[j - 1]) {
